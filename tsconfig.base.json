@@ -14,7 +14,10 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@nx-workspace-testing/data-access": ["libs/data-access/src/index.ts"],
+      "@nx-workspace-testing/feature-sets": ["libs/feature-sets/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
