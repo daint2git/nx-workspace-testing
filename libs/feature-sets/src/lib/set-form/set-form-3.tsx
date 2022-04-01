@@ -1,4 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
+import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -9,6 +10,7 @@ import {
   AllSetsQuery,
   useAddSetMutation,
 } from '@nx-workspace-testing/data-access';
+import { useEffect } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import * as yup from 'yup';
@@ -42,16 +44,22 @@ interface IFormValues {
   year: number | null;
   numParts: number;
   color: ColorEnum;
+  subName: string;
 }
 
 const schema = yup
   .object({
-    name: yup.string().required('The name is required'),
+    name: yup.string().required('The name is required.'),
     year: yup
       .number()
-      .integer('The year is a number')
-      .required('The year is required'),
-    numParts: yup.number().integer().required('The numParts is required'),
+      .required('The year is required.')
+      .typeError('The year must be a number.')
+      .integer('The year is an integer number.'),
+    numParts: yup
+      .number()
+      .typeError('The numParts must be a number.')
+      .integer('The numParts is an integer number.')
+      .required('The numParts is required.'),
   })
   .required();
 
@@ -59,17 +67,32 @@ function SetForm(props: SetFormProps) {
   const {
     control,
     register,
+    unregister,
     handleSubmit,
+    setValue,
     reset,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<IFormValues>({
+    mode: 'onBlur',
     defaultValues: {
       name: '',
       year: null,
       numParts: 1000,
       color: ColorEnum.Red,
     },
-    resolver: yupResolver(schema),
+    // resolver: yupResolver(schema),
+    resolver: async (data, context, options) => {
+      // you can debug your validation schema here
+
+      // console.log('resolver::data', data);
+      // console.log('resolver::context', context);
+      // console.log('resolver::options', options);
+      // console.log(
+      //   'resolver::validation result',
+      //   await yupResolver(schema)(data, context, options)
+      // );
+      return yupResolver(schema)(data, context, options);
+    },
   });
 
   const [addSetMutation] = useAddSetMutation({
@@ -94,6 +117,10 @@ function SetForm(props: SetFormProps) {
     },
   });
 
+  useEffect(() => {
+    register('subName');
+  }, [register]);
+
   const submit: SubmitHandler<IFormValues> = async (data) => {
     console.log('submit::data', data);
 
@@ -105,6 +132,8 @@ function SetForm(props: SetFormProps) {
       },
     });
   };
+
+  // console.log('isSubmitting', isSubmitting);
 
   return (
     <StyledSetForm>
@@ -132,8 +161,15 @@ function SetForm(props: SetFormProps) {
           <input
             id="year"
             {...register('year', {
-              minLength: 4,
-              maxLength: 4,
+              minLength: {
+                value: 4,
+                message: 'minLength = 4',
+              },
+              // maxLength: 4,
+              maxLength: {
+                value: 4,
+                message: 'maxLength = 4',
+              },
               pattern: /^\d+$/,
             })}
           />
@@ -160,6 +196,24 @@ function SetForm(props: SetFormProps) {
           )}
         </label>
         <br />
+        <label htmlFor="subName">
+          Sub name:
+          <input
+            id="subName"
+            onChange={(e) => setValue('subName', e.target.value)}
+          />
+        </label>
+        <div />
+        <br />
+        <Button
+          type="button"
+          variant="outlined"
+          onClick={() => unregister('subName')}
+        >
+          unregister subName
+        </Button>
+        <div />
+        <br />
         <FormControl fullWidth>
           <InputLabel id="color-id">Color:</InputLabel>
           <Controller
@@ -184,7 +238,9 @@ function SetForm(props: SetFormProps) {
         </FormControl>
         <div />
         <br />
-        <button type="submit">Create new set</button>
+        <Button disabled={isSubmitting} type="submit" variant="contained">
+          Create new set
+        </Button>
       </form>
     </StyledSetForm>
   );

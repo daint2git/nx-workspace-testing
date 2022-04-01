@@ -2,13 +2,13 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { MockedProvider, MockedResponse } from '@apollo/client/testing';
 import userEvent from '@testing-library/user-event';
 
-import SetForm from './set-form';
+import SetForm from './set-form-1';
 import {
   AddSetMutation,
   AddSetDocument,
 } from '@nx-workspace-testing/data-access';
 
-describe('SetForm', () => {
+describe('SetForm1', () => {
   it('should render without error', () => {
     render(
       <MockedProvider addTypename={false}>

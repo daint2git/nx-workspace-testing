@@ -13,9 +13,11 @@ const config = {
   testMatch: ['**/+(*.)+(spec|test).ts?(x)'],
   moduleFileExtensions: ['ts', 'tsx', 'js'],
   coverageDirectory: '../../coverage/libs/feature-sets',
-  moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths),
-  setupFiles: ['<rootDir>/config/test/unit/setupFiles.js'],
-  setupFilesAfterEnv: ['<rootDir>/config/test/unit/setupFilesAfterEnv.js'],
+  moduleNameMapper: compilerOptions.paths
+    ? pathsToModuleNameMapper(compilerOptions.paths)
+    : {},
+  setupFiles: ['<rootDir>/config/test/unit/setupFiles.ts'],
+  setupFilesAfterEnv: ['<rootDir>/config/test/unit/setupFilesAfterEnv.ts'],
   watchPlugins: [
     'jest-watch-typeahead/filename',
     'jest-watch-typeahead/testname',

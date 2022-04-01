@@ -1,0 +1,28 @@
+{
+  "root": "apps/my-react-testing-e2e",
+  "sourceRoot": "apps/my-react-testing-e2e/src",
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@nrwl/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/my-react-testing-e2e/cypress.json",
+        "devServerTarget": "my-react-testing:serve"
+      },
+      "configurations": {
+        "production": {
+          "devServerTarget": "my-react-testing:serve:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/my-react-testing-e2e/**/*.{js,ts}"]
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["my-react-testing"]
+}

@@ -2,3 +2,4 @@
 
 /dist
 /coverage
+!apps/my-react-testing/.eslintrc.json

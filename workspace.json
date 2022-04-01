@@ -5,6 +5,8 @@
     "data-access": "libs/data-access",
     "feature-sets": "libs/feature-sets",
     "my-next-app": "apps/my-next-app",
-    "my-next-app-e2e": "apps/my-next-app-e2e"
+    "my-next-app-e2e": "apps/my-next-app-e2e",
+    "my-react-testing": "apps/my-react-testing",
+    "my-react-testing-e2e": "apps/my-react-testing-e2e"
   }
 }

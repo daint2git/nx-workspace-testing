@@ -1,0 +1,73 @@
+{
+  "root": "apps/my-react-testing",
+  "sourceRoot": "apps/my-react-testing/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/web:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "compiler": "babel",
+        "outputPath": "dist/apps/my-react-testing",
+        "index": "apps/my-react-testing/src/index.html",
+        "baseHref": "/",
+        "main": "apps/my-react-testing/src/main.tsx",
+        "polyfills": "apps/my-react-testing/src/polyfills.ts",
+        "tsConfig": "apps/my-react-testing/tsconfig.app.json",
+        "assets": [
+          "apps/my-react-testing/src/favicon.ico",
+          "apps/my-react-testing/src/assets"
+        ],
+        "styles": [],
+        "scripts": [],
+        "webpackConfig": "@nrwl/react/plugins/webpack"
+      },
+      "configurations": {
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "apps/my-react-testing/src/environments/environment.ts",
+              "with": "apps/my-react-testing/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/web:dev-server",
+      "options": {
+        "buildTarget": "my-react-testing:build",
+        "hmr": true
+      },
+      "configurations": {
+        "production": {
+          "buildTarget": "my-react-testing:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/my-react-testing/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/my-react-testing"],
+      "options": {
+        "jestConfig": "apps/my-react-testing/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}
